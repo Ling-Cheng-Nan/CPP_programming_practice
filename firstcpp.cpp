@@ -3,6 +3,9 @@
 //directives
 using namespace std ; //group different code to prevent naming conflicts
 
+int multiply(int , int);
+
+
 int main(){
 
     /*variables*/
@@ -15,7 +18,11 @@ int main(){
     cout << "Enter the number of pizza you want to eat: " << endl;
     cin  >> slice;
     cout << "You have " << slice << " slices of pizza." << endl ;
+    cout << multiply(30, 5) << endl ;
     
-    printf("printf print out %d slices \n", slice);
     return 0;
+}
+
+int multiply(int x, int y){
+    return x*y;
 }
