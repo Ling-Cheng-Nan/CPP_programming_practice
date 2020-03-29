@@ -17,6 +17,7 @@ Problem Description :
 */
 
 #include <iostream>
+#define HIGHEST_POWER_OF_EQUATION 2 
 
 /* directives */
 using namespace std ; //group different code to prevent naming conflicts
@@ -27,7 +28,7 @@ int main(){
 
     /*variables declaration*/
     
-
+    
 
     return 0;
 }
@@ -38,3 +39,6 @@ void Selection(){
 
 }
 
+int Fitness(){
+
+}
