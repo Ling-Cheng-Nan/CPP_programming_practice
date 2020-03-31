@@ -17,28 +17,75 @@ Problem Description :
 */
 
 #include <iostream>
-#define HIGHEST_POWER_OF_EQUATION 2 
+#include <string>
+#include "functionsOfGA.h"
+#define AmountOfPopulation 4 //子代數量
+#define LengthOfChromosome 8 //染色體長度 (how many bits to encoded)
+
 
 /* directives */
 using namespace std ; //group different code to prevent naming conflicts
 
 /* function prototypes */
+void showPopulation(int [][LengthOfChromosome+1]);
+void initial_population(int [][LengthOfChromosome+1]);
+void fitness_function(int [][LengthOfChromosome+1]);
+void selection();
+void crossover();
+void mutation();
+
 
 int main(){
 
     /*variables declaration*/
+    int cut_index = 0;
+    int str[AmountOfPopulation][LengthOfChromosome+1];
     
-    
-
+    //string *pstr = &str;
+    initial_population(str);
+    showPopulation(str);
+    fitness_function(str);
+    showPopulation(str);
     return 0;
 }
 
-
 /* function implementation */
-void Selection(){
-
+void showPopulation(int str[][LengthOfChromosome+1]){
+    for(int j = 0 ; j < AmountOfPopulation ; j++){
+        for(int i = 0 ; i < LengthOfChromosome ; i++){
+            cout << str[j][i];
+        }
+        cout << endl;
+    }
 }
 
-int Fitness(){
-
+void initial_population(int str[][LengthOfChromosome+1]){
+    cout << "...Initial Population..." << endl;
+    for(int j = 0 ; j < AmountOfPopulation ; j++){
+        for(int i = 0 ; i < LengthOfChromosome+1 ; i++){
+            str[j][i] = rand()%2;
+            if(i == LengthOfChromosome)
+                cout << "fitness : "+str[j][LengthOfChromosome] << endl;
+        }
+    }
 }
+
+void fitness_function(int str[][LengthOfChromosome+1]){
+    
+    for(int j = 0 ; j < AmountOfPopulation ; j++){
+        for(int i = 0 ; i < LengthOfChromosome+1 ; i++){
+            if(i != LengthOfChromosome){
+                str[j][LengthOfChromosome-i] += str[j][LengthOfChromosome-i];//^2;
+            }
+            else if(i == LengthOfChromosome){
+                str[j][i] += str[j][LengthOfChromosome-i];
+            }
+            else{
+                cout << "error!!" << endl;
+            } 
+        }
+    }
+}
+void selection(){}
+void crossover(){}
+void mutation(){}

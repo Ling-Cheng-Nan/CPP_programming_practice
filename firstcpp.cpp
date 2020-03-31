@@ -1,5 +1,5 @@
 #include <iostream>
-#include <climits>
+#include <string>
 
 //directives
 using namespace std ; //group different code to prevent naming conflicts
