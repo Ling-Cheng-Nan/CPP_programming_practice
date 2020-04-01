@@ -5,18 +5,33 @@
 
 //directives
 using namespace std ; //group different code to prevent naming conflicts
+<<<<<<< HEAD
 
 void play_game();
 
+=======
+string blurrTheFuck(string );
+>>>>>>> 0f997a3d41e1ed008240315276c686e61682cbac
 int main(){
 
     srand(time(NULL));
     
     /*variables*/
+<<<<<<< HEAD
     int choice;
     do{
         cout << "0. Quit " << endl << "1. Play Game " << endl;
         cin >> choice;
+=======
+    string greeting ;//= "hello there, the abc is bca";
+    getline(cin, greeting);
+
+    cout << blurrTheFuck(greeting) << endl;
+    //cout << greeting << endl;
+
+
+
+>>>>>>> 0f997a3d41e1ed008240315276c686e61682cbac
 
         switch(choice){
             case 0 :
@@ -38,6 +53,7 @@ int main(){
     return 0;
 }
 
+<<<<<<< HEAD
 void play_game(){
     cout << "Game is been played!\n";
     int random = rand() % 251;
@@ -65,5 +81,10 @@ void play_game(){
 
 
     }
+=======
+string blurrTheFuck(string str){
+    return str.replace(str.find("fuck"), 4, "f**k") ;
+    //cout << str << endl;
+>>>>>>> 0f997a3d41e1ed008240315276c686e61682cbac
 
 }
