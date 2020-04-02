@@ -18,7 +18,6 @@ Problem Description :
 
 #include <iostream>
 #include <string>
-#include "functionsOfGA.h"
 #define AmountOfPopulation 4 //子代數量
 #define LengthOfChromosome 8 //染色體長度 (how many bits to encoded)
 
@@ -52,7 +51,7 @@ int main(){
 /* function implementation */
 void showPopulation(int str[][LengthOfChromosome+1]){
     for(int j = 0 ; j < AmountOfPopulation ; j++){
-        for(int i = 0 ; i < LengthOfChromosome ; i++){
+        for(int i = 0 ; i < LengthOfChromosome+1 ; i++){
             cout << str[j][i];
         }
         cout << endl;
@@ -64,27 +63,13 @@ void initial_population(int str[][LengthOfChromosome+1]){
     for(int j = 0 ; j < AmountOfPopulation ; j++){
         for(int i = 0 ; i < LengthOfChromosome+1 ; i++){
             str[j][i] = rand()%2;
-            if(i == LengthOfChromosome)
-                cout << "fitness : "+str[j][LengthOfChromosome] << endl;
         }
     }
 }
 
 void fitness_function(int str[][LengthOfChromosome+1]){
     
-    for(int j = 0 ; j < AmountOfPopulation ; j++){
-        for(int i = 0 ; i < LengthOfChromosome+1 ; i++){
-            if(i != LengthOfChromosome){
-                str[j][LengthOfChromosome-i] += str[j][LengthOfChromosome-i];//^2;
-            }
-            else if(i == LengthOfChromosome){
-                str[j][i] += str[j][LengthOfChromosome-i];
-            }
-            else{
-                cout << "error!!" << endl;
-            } 
-        }
-    }
+    
 }
 void selection(){}
 void crossover(){}
