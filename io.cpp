@@ -47,8 +47,8 @@ int main(){
     // }
     // std::ifstream infile("taco2.txt");
     
-        if(infile.is_open){
-            std::cout << "file opened successful." << endl;
+        if(infile.is_open()){
+            std::cout << "file opened successful." << std::endl;
             getline(infile, input);
             std::cout << input << std::endl;
         }
