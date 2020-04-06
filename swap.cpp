@@ -9,6 +9,16 @@ void swap(T &a, T &b){
     
 }
 
+/*template functions with overloading*/
+template <typename T>
+void swap(T a[], T b[], int size){
+    for(int i=0 ; i<size ; i++){
+        T temp = a[i];
+        a[i] = b[i];
+        b[i] = temp;
+    }
+}
+
 //overloading
 // void swap(std::string &a, std::string &b){
 //     std:: string temp = a;
@@ -33,6 +43,21 @@ int main(){
     swap(A, B);
     std::cout << "A:" << A << "\nB:"<< B << std::endl;
     
+    int nines[] = {9,9,9,9,9,9,9,9};
+    int ones[] = {1,1,1,1,1,1,1,1}; 
+    int const SIZE = sizeof(nines)/sizeof(int);
+
+    swap(nines, ones, SIZE);
     
+    for(int i=0 ; i<SIZE ; i++){
+        std::cout << "nines[" << i << "] = " << nines[i] << " \n";
+    }
+    
+
+    for(int i=0 ; i<SIZE ; i++){
+        std::cout << " ones[" << i << "] = " << ones[i] << " \n";
+    }
+    
+
     return 0;
 }
