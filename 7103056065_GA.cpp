@@ -33,7 +33,7 @@ void showPopulation(int [][LengthOfChromosome+1]);
 void initial_population(int [][LengthOfChromosome+1]);
 void fitness_function(int [][LengthOfChromosome+1]);
 void selection(int [][LengthOfChromosome+1]);
-void crossover();
+void crossover(int [][LengthOfChromosome+1], int);
 void mutation();
 
 
@@ -43,7 +43,7 @@ int main(){
     srand(time(NULL));
     int cut_index = 0;
     int str[AmountOfPopulation][LengthOfChromosome+1];
-
+    int select[MinimumSelected][LengthOfChromosome+1];
 
     initial_population(str);
     showPopulation(str);
@@ -102,26 +102,63 @@ void fitness_function(int str[][LengthOfChromosome+1]){
 }
 
 void selection(int str[][LengthOfChromosome+1]){
+    
     int selected[MinimumSelected][LengthOfChromosome+1] = {0};
     bool usedindex[AmountOfPopulation] = {0};
-    
+    int flag = 0;
     int min = pow(2, LengthOfChromosome);
             
     for(int j = 0 ; j < MinimumSelected ; j++){
     
         for(int i = 0 ; i < AmountOfPopulation ; i++){
+            //cout << usedindex[i] << endl;
             if(usedindex[i] == false && str[i][LengthOfChromosome] < min){
                 min = str[i][LengthOfChromosome];
-                
-            }
-    
+                flag = i;
+            } 
         }
 
-        cout << min << endl;
+        // cout << "flag: "<< flag << endl;
+        // cout << usedindex[flag] <<endl;
+        // cout << "min: " << min << endl;
+
+        for(int k = 0 ; k < LengthOfChromosome ; k++){
+            selected[j][k] = str[flag][k];
+            // cout << selected[j][k];
+        }
+        // cout << endl;
+        
+        //reset
+        min = pow(2, LengthOfChromosome);
+        usedindex[flag] = true;
+        flag = 0;
+
     }
+
+    crossover(selected, 3);
 }
 
-void crossover(int str[][LengthOfChromosome+1],int cut){
+void crossover(int str[][LengthOfChromosome+1], int cut){
+    int temp[AmountOfPopulation/2][LengthOfChromosome+1] = {0};
+    
+    for(int j = 0 ; j < AmountOfPopulation/2 ; j++){
+        for(int i = 0; i < LengthOfChromosome ; i++){
+            if(i <= cut){
+                //copy half into temp
+                temp[j][i] = str[j][i];
+            }
+            else if(i > cut){
+                //copy another half into temp
+                temp[j][i] = str[j+1][i];
+            }
+        }
+    }
+
+    cout << "temp" << endl;
+    for(int i = 0; i < LengthOfChromosome ; i++){
+        cout << temp[0][i];
+    }
+
     
 }
 
