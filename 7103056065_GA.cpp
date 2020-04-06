@@ -29,11 +29,11 @@ Problem Description :
 using namespace std ; //group different code to prevent naming conflicts
 
 /* function prototypes */
-void showPopulation(int [][LengthOfChromosome+1]);
+void showPopulation(int [][LengthOfChromosome+1], int);
 void initial_population(int [][LengthOfChromosome+1]);
-void fitness_function(int [][LengthOfChromosome+1]);
-void selection(int [][LengthOfChromosome+1]);
-void crossover(int [][LengthOfChromosome+1], int);
+void fitness_function(int [][LengthOfChromosome+1], int);
+void selection(int [][LengthOfChromosome+1], int [][LengthOfChromosome+1]);
+void crossover(int [][LengthOfChromosome+1], int, int (*)[LengthOfChromosome+1], int AmountOfPopulation);
 void mutation();
 
 
@@ -42,27 +42,37 @@ int main(){
     /*variables declaration*/
     srand(time(NULL));
     int cut_index = 0;
-    int str[AmountOfPopulation][LengthOfChromosome+1];
+    int candidate_gene[AmountOfPopulation][LengthOfChromosome+1];
     int select[MinimumSelected][LengthOfChromosome+1];
+    int temp[MinimumSelected][LengthOfChromosome+1];
 
-    initial_population(str);
-    showPopulation(str);
-    fitness_function(str);
-    showPopulation(str);
-    selection(str);
+    initial_population(candidate_gene);
+    
+    // while(){
+        fitness_function(candidate_gene, AmountOfPopulation);
+        showPopulation(candidate_gene, AmountOfPopulation);
+
+        selection(candidate_gene, select);
+        crossover(select, MinimumSelected+1);
+
+        fitness_function(select, MinimumSelected);
+        //showPopulation(select, MinimumSelected);
+
+        showPopulation(candidate_gene, AmountOfPopulation);
+    // };
 
     return 0;
 }
 
 /* function implementation */
-void showPopulation(int str[][LengthOfChromosome+1]){
+void showPopulation(int gen[][LengthOfChromosome+1], int num){
     cout << "  gene  | fitness" << endl;
-    for(int j = 0 ; j < AmountOfPopulation ; j++){
+    for(int j = 0 ; j < num ; j++){
         for(int i = 0 ; i < LengthOfChromosome+1 ; i++){
             if(i==LengthOfChromosome)
-                cout << "|    " << str[j][i]  << endl;
+                cout << "|    " << gen[j][i]  << endl;
             else
-                cout << str[j][i];
+                cout << gen[j][i];
 
         }
         // cout << endl;
@@ -71,39 +81,39 @@ void showPopulation(int str[][LengthOfChromosome+1]){
 
 }
 
-void initial_population(int str[][LengthOfChromosome+1]){
+void initial_population(int gen[][LengthOfChromosome+1]){
     
     cout << "...Initial Population..." << endl;
     for(int j = 0 ; j < AmountOfPopulation ; j++){
         for(int i = 0 ; i < LengthOfChromosome+1 ; i++){
             if( i == LengthOfChromosome ){
-                str[j][i] = 0;
+                gen[j][i] = 0;
             }
             else{
-                str[j][i] = rand()%2;
+                gen[j][i] = rand()%2;
             }
         }
     }
 }
 
-void fitness_function(int str[][LengthOfChromosome+1]){
+void fitness_function(int gen[][LengthOfChromosome+1], int num){
     
     cout << "...Fitness Fitness..." << endl;
     int fitness[LengthOfChromosome]={0};
-    for(int j = 0 ; j < AmountOfPopulation ; j++){
+    for(int j = 0 ; j < num ; j++){
         for(int i = 0 ; i <= LengthOfChromosome-1 ; i++){
-           fitness[j] += (str[j][i])*pow(2, (LengthOfChromosome-1)-i);
+           fitness[j] += (gen[j][i])*pow(2, (LengthOfChromosome-1)-i);
         }
 
-        str[j][LengthOfChromosome] = fitness[j];
-        // cout << str[j][LengthOfChromosome] << endl;
+        gen[j][LengthOfChromosome] = fitness[j];
+        // cout << gen[j][LengthOfChromosome] << endl;
     }
     
 }
 
-void selection(int str[][LengthOfChromosome+1]){
+void selection(int gen[][LengthOfChromosome+1], int selected[][LengthOfChromosome+1]){
     
-    int selected[MinimumSelected][LengthOfChromosome+1] = {0};
+    //int selected[MinimumSelected][LengthOfChromosome+1] = {0};
     bool usedindex[AmountOfPopulation] = {0};
     int flag = 0;
     int min = pow(2, LengthOfChromosome);
@@ -112,8 +122,8 @@ void selection(int str[][LengthOfChromosome+1]){
     
         for(int i = 0 ; i < AmountOfPopulation ; i++){
             //cout << usedindex[i] << endl;
-            if(usedindex[i] == false && str[i][LengthOfChromosome] < min){
-                min = str[i][LengthOfChromosome];
+            if(usedindex[i] == false && gen[i][LengthOfChromosome] < min){
+                min = gen[i][LengthOfChromosome];
                 flag = i;
             } 
         }
@@ -123,7 +133,7 @@ void selection(int str[][LengthOfChromosome+1]){
         // cout << "min: " << min << endl;
 
         for(int k = 0 ; k < LengthOfChromosome ; k++){
-            selected[j][k] = str[flag][k];
+            selected[j][k] = gen[flag][k];
             // cout << selected[j][k];
         }
         // cout << endl;
@@ -135,21 +145,24 @@ void selection(int str[][LengthOfChromosome+1]){
 
     }
 
-    crossover(selected, 3);
+    
 }
 
-void crossover(int str[][LengthOfChromosome+1], int cut){
-    int temp[AmountOfPopulation/2][LengthOfChromosome+1] = {0};
+void crossover(int gen[][LengthOfChromosome+1], int cut, int (*)[LengthOfChromosome+1], int amt){
     
-    for(int j = 0 ; j < AmountOfPopulation/2 ; j++){
+    cout << ".....Cross Over....." << endl;
+    int temp[MinimumSelected][LengthOfChromosome+1] = {0};
+    int new_candidate[AmountOfPopulation][LengthOfChromosome+1] = {0};
+
+    for(int j = 0 ; j < MinimumSelected ; j++){
         for(int i = 0; i < LengthOfChromosome ; i++){
             if(i <= cut){
                 //copy half into temp
-                temp[j][i] = str[j][i];
+                temp[j][i] = gen[j][i];
             }
             else if(i > cut){
                 //copy another half into temp
-                temp[j][i] = str[(j+1)%(AmountOfPopulation/2)][i];
+                temp[j][i] = gen[(j+1)%(MinimumSelected)][i];
             }
         }
     }
@@ -159,17 +172,32 @@ void crossover(int str[][LengthOfChromosome+1], int cut){
     for(int i = 0; i < LengthOfChromosome ; i++){
         cout << temp[0][i];
     }
-
     cout << endl;
     for(int i = 0; i < LengthOfChromosome ; i++){
         cout << temp[1][i];
     }
+    cout << endl;
+
+    cout << "new candidate"<< endl;
+    for(int j = 0 ; j < AmountOfPopulation ; j++){
+        for(int i = 0 ; i < LengthOfChromosome ; i++){
+            if(j < MinimumSelected) 
+                new_candidate[j][i] = gen[j][i];
+            else 
+                new_candidate[j][i] = temp[j-MinimumSelected][i];
+
+            cout << new_candidate[j][i];
+        }
+
+        cout << endl;
+    }
+
 
 
 
 }
 
-void mutation(int str[][LengthOfChromosome+1]){
+void mutation(int gen[][LengthOfChromosome+1]){
     /*generate mutation index*/
     int mutation_num = rand()%AmountOfPopulation+1;
     int mutation_gene = rand()%AmountOfPopulation;
