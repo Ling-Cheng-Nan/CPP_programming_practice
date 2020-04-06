@@ -149,17 +149,24 @@ void crossover(int str[][LengthOfChromosome+1], int cut){
             }
             else if(i > cut){
                 //copy another half into temp
-                temp[j][i] = str[j+1][i];
+                temp[j][i] = str[(j+1)%(AmountOfPopulation/2)][i];
             }
         }
     }
 
     cout << "temp" << endl;
+
     for(int i = 0; i < LengthOfChromosome ; i++){
         cout << temp[0][i];
     }
 
-    
+    cout << endl;
+    for(int i = 0; i < LengthOfChromosome ; i++){
+        cout << temp[1][i];
+    }
+
+
+
 }
 
 void mutation(int str[][LengthOfChromosome+1]){
