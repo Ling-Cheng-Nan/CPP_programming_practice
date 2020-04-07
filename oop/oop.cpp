@@ -14,9 +14,25 @@ class User{
             return status;
         }
 
-        void setStatus(std::string str){
-            status = str;
+        void setStatus(std::string status){
+            this->status = status;
         }
+
+        User(){
+            std::cout << "Constructor created!"  << std::endl;
+        }
+
+        User(std::string first_name, std::string last_name){
+            
+            this->first_name = last_name;
+            this->last_name  = last_name;
+
+            status = "Not assigned yet.";
+        }
+
+        // ~User(){
+        //     std::cout << "Destructor...." << std::endl;
+        // }
 };
 
 int add_user_if_not_exists(std::vector<User> &users, User user){
@@ -35,33 +51,35 @@ int add_user_if_not_exists(std::vector<User> &users, User user){
 
 int main(){
 
-    User user1, user2 , user3, user4, user5;
-    user1.first_name = "Sam";
-    user1.last_name  = "Ling";
+    // User user1, user2 , user3, user4, user5;
+    // User user("Jane", "Mood");
 
-    user2.first_name = "Sam";
-    user2.last_name  = "Cheng";
-    
-    user3.first_name = "Sammmy";
-    user3.last_name  = "Lou";    
-    
-    user4.first_name = "Max";
-    user4.last_name  = "Smith";
-    
-    user5.first_name = "Sammmy";
-    user5.last_name  = "Lou";
-    
-    std::vector<User> users;
-    users.push_back(user1);
-    users.push_back(user2);
-    users.push_back(user3);
-    users.push_back(user1);
+    // user1.first_name = "Sam";
+    // user1.last_name  = "Ling";
 
-    std::cout << users.size() << std::endl;
-    std::cout << add_user_if_not_exists(users, user4) << std::endl;
-    std::cout << users.size() << std::endl;
-    std::cout << add_user_if_not_exists(users, user5) << std::endl;
-    std::cout << users.size() << std::endl;
+    // user2.first_name = "Sam";
+    // user2.last_name  = "Cheng";
+    
+    // user3.first_name = "Sammmy";
+    // user3.last_name  = "Lou";    
+    
+    // user4.first_name = "Max";
+    // user4.last_name  = "Smith";
+    
+    // user5.first_name = "Sammmy";
+    // user5.last_name  = "Lou";
+    
+    // std::vector<User> users;
+    // users.push_back(user1);
+    // users.push_back(user2);
+    // users.push_back(user3);
+    // users.push_back(user1);
+
+    // std::cout << users.size() << std::endl;
+    // std::cout << add_user_if_not_exists(users, user4) << std::endl;
+    // std::cout << users.size() << std::endl;
+    // std::cout << add_user_if_not_exists(users, user5) << std::endl;
+    // std::cout << users.size() << std::endl;
 
 
 
