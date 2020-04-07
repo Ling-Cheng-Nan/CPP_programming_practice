@@ -15,7 +15,13 @@ class User{
         }
 
         void setStatus(std::string status){
-            this->status = status;
+            if(status == "Gold" || status == "Silver" || status == "Choper"){
+                this->status = status;
+            }
+            else{
+                this->status = "No valid status";
+                std::cout << this->status << std::endl;
+            }
         }
 
         User(){
@@ -84,6 +90,8 @@ int main(){
 
 
     // std::cout << users[0].first_name + users[0].last_name << std::endl;
+    User user;
+    user.setStatus("Taco");
 
 
     return 0;
