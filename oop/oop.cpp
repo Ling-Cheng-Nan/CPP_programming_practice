@@ -3,13 +3,19 @@
 #include <vector>
 
 class User{
+    
     private:
+        static int users_count;
         std::string status;
-        
-    public:
+
+    public: 
         std::string first_name;
         std::string last_name;
         
+        static int get_user_count(){
+            return users_count;
+        }
+
         std::string getStatus(){
             return status;
         }
@@ -26,20 +32,26 @@ class User{
 
         User(){
             std::cout << "Constructor created!"  << std::endl;
+            users_count++;
         }
 
         User(std::string first_name, std::string last_name){
             
             this->first_name = last_name;
             this->last_name  = last_name;
-
             status = "Not assigned yet.";
+
+            users_count++;
+
         }
 
-        // ~User(){
-        //     std::cout << "Destructor...." << std::endl;
-        // }
+        ~User(){
+            // std::cout << "Destructor...." << std::endl;
+            users_count--;
+        }
 };
+
+int User::users_count = 0;
 
 int add_user_if_not_exists(std::vector<User> &users, User user){
     
@@ -90,9 +102,12 @@ int main(){
 
 
     // std::cout << users[0].first_name + users[0].last_name << std::endl;
-    User user;
-    user.setStatus("Taco");
+    User user, user1, user2, user3;
+    // user.setStatus("Taco");
 
+    std::cout << "user counts : " << User::get_user_count() << std::endl;
+    user.~User();
+    std::cout << "After destructor, static variable user counts : " << User::get_user_count() << std::endl;
 
     return 0;
 }
