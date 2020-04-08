@@ -42,6 +42,10 @@
             users_count--;
         }
 
+        void User::output(){
+            std::cout << "I'm a user.\n";
+        }
+
         void output_status(User user); //a friend function definition outside
         std::ostream& operator << (std::ostream& output, const User user);
         std::istream& operator >> (std::istream &input, User &user);
