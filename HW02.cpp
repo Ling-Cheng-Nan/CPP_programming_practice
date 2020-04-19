@@ -18,7 +18,10 @@ void showArray(double [][ITEM_QTY], int);
 void determineItemPrice(double [][ITEM_QTY]);
 void initialization(double [][ITEM_QTY], int);
 void display_dashboard(double [][ITEM_QTY], double [][2], int);
-void evaluate_weight(double cand[][ITEM_QTY], double bag_profit[][2], int particle);
+void fitness(double cand[][ITEM_QTY], double bag_profit[][2], int particle);
+void selection(double cand[][ITEM_QTY], double bagprofit[][2], int particle);
+void crossover(double cand[][ITEM_QTY], int particle);
+void mutation(double cand[][ITEM_QTY], int particle);
 
 int main(){
     
@@ -38,9 +41,23 @@ int main(){
     initialization(candidates, PARTICLE_AMT);
     // display_dashboard(candidates, bag_profit, PARTICLE_AMT);
 
-    // while(){
-        evaluate_weight(candidates, bag_profit, PARTICLE_AMT);
+    // for(int g = 0 ; g < GENERATION_ITERATE ; g++){
+    //     cout << "==== Generation: " << g+1 << "====" << endl;
+        fitness(candidates, bag_profit, PARTICLE_AMT);
         display_dashboard(candidates, bag_profit, PARTICLE_AMT);
+        
+        selection(candidates, bag_profit, PARTICLE_AMT);
+        fitness(candidates, bag_profit, PARTICLE_AMT);
+        display_dashboard(candidates, bag_profit, PARTICLE_AMT);
+        
+        crossover(candidates, PARTICLE_AMT);
+        fitness(candidates, bag_profit, PARTICLE_AMT);
+        display_dashboard(candidates, bag_profit, PARTICLE_AMT);
+
+        mutation(candidates, PARTICLE_AMT);
+        fitness(candidates, bag_profit, PARTICLE_AMT);
+        display_dashboard(candidates, bag_profit, PARTICLE_AMT);
+
     // }   
 
     return 0;
@@ -100,7 +117,7 @@ void initialization(double cand[][ITEM_QTY], int row_size){
     }
 }
 
-void evaluate_weight(double cand[][ITEM_QTY], double bag_profit[][2], int particle){
+void fitness(double cand[][ITEM_QTY], double bag_profit[][2], int particle){
     
     int index_sum = 0; //sum of indice
     int value = 0; //count of 1s
@@ -129,12 +146,128 @@ void evaluate_weight(double cand[][ITEM_QTY], double bag_profit[][2], int partic
 
 void selection(double cand[][ITEM_QTY], double bagprofit[][2], int particle){
     
+    double min = 2048;
+    double cur_min = 2049;
+    double temp[particle/2][ITEM_QTY];
     int min_index[particle/2];
-    
-    for(int i = 0 ; i < particle ; i++){
+    int slct_index;
 
+    cout << "After Selection" << endl;
+    for(int i = 0 ; i < particle/2 ; i++){
+        min_index[i] = -1;
+    }
+
+    for(int i = 0 ; i < particle/2 ; i++){
+        for(int j = 0 ; j < particle ; j++){
+            
+                if((bagprofit[j][1] < min)){
+                    
+                    for(int k = 0 ; k < particle/2 ; k++){
+                        if(min_index[k] != j && bagprofit[j][1] != cur_min){ 
+                            min = bagprofit[j][1];
+                            min_index[i] = j;
+                        }
+                    }
+                }
+            
+        }
+        /*found another min*/
+        cur_min = min;
+        min = 2048;
+    }
+
+    /*copy selected content into temp array*/
+    for(int i = 0 ; i < particle/2 ; i++){
+        
+        slct_index = min_index[i];
+        for(int k = 0 ; k < ITEM_QTY ; k++){
+            temp[i][k] = cand[slct_index][k];
+        }
+    }
+    
+    // //check out content of min_index
+    // for(int h = 0 ; h < particle/2 ; h++){
+    //     cout << min_index[h] << " ";
+    // }
+    // cout << endl;
+
+    // showArray(temp, particle/2);
+
+    /*move half least to prior half*/
+    for(int i = 0 ; i < particle ; i++){
+        for(int j=0 ; j < ITEM_QTY ; j++){
+            if(i < particle/2)
+                cand[i][j] = temp[i][j];
+            else
+                cand[i][j] = 0;
+        }
     }
 }
 
+
+void crossover(double cand[][ITEM_QTY], int particle){
+    
+    int temp [particle/2][ITEM_QTY];
+    int cut_index = ITEM_QTY/2;
+    int half_flag = particle/2;
+
+    cout << "After Crossover" << endl;
+    for(int i = 0 ; i < particle/2 ; i++){
+        for(int j = 0 ; j < ITEM_QTY ; j++){
+            if(j < cut_index)
+                temp[i][j] = cand[i][j];
+            if(j >= cut_index)
+                temp[i][j] = cand[half_flag-i-1][j];
+        }
+    }
+
+    // /*check out the content of temp array after crossover*/
+    // for(int i = 0 ; i < particle/2 ; i++){
+    //     for(int j = 0 ; j < ITEM_QTY ; j++){
+    //         cout << temp[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    /*copy temp into another half candidate */
+    for(int i = particle/2 ; i < particle ; i++){
+        for(int j = 0 ; j < ITEM_QTY ; j++){
+            cand[i][j] = temp[i-half_flag][j];
+        }
+    }
+    
+}
+
+void mutation(double cand[][ITEM_QTY], int particle){
+    /* unsure mutate from children destination */
+    srand(time(NULL));
+    int half = PARTICLE_AMT/2;
+    int mut_index, chance; 
+    
+    cout << "After Mutation" << endl;
+    for(int i = 0 ; i < particle ; i++){
+        
+        chance = rand()%2;
+        // cout << "chance : " << chance << endl;
+        
+        for(int j = 0 ; j < ITEM_QTY ; j++){
+
+            
+            if(i >= half && chance){
+
+                mut_index = rand()%ITEM_QTY;
+
+                // cout << "mutate on particle " << i << endl;
+                // cout << "mutate on index " << mut_index << endl;
+                if(cand[i][mut_index] == 1)
+                    cand[i][mut_index] = 0;
+                else 
+                    cand[i][mut_index] = 1;
+                
+                break;
+            }
+        }
+    }
+}
 
 
