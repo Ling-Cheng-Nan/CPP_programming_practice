@@ -7,9 +7,11 @@ typedef struct rectangle{
 
 } Rectangle;
 
-double area(double, double);
-double area(double);
-double area(Rectangle);
-double pow(double , double);
+namespace utilz {
+    double area(double, double);
+    double area(double);
+    double area(Rectangle);
+    double pow(double , double);
+}
 
 #endif
