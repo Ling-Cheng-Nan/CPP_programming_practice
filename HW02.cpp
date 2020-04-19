@@ -18,20 +18,20 @@ void showArray(double [][ITEM_QTY], int);
 void determineItemPrice(double [][ITEM_QTY]);
 void initialization(double [][ITEM_QTY], int);
 void display_dashboard(double [][ITEM_QTY], double [][2], int);
-void fitness(double cand[][ITEM_QTY], double bag_profit[][2], int particle);
-void selection(double cand[][ITEM_QTY], double bagprofit[][2], int particle);
-void crossover(double cand[][ITEM_QTY], int particle);
-void mutation(double cand[][ITEM_QTY], int particle);
+void fitness(double [][ITEM_QTY], double [][2], int);
+void selection(double [][ITEM_QTY], double [][2], int);
+void crossover(double [][ITEM_QTY], int);
+void mutation(double [][ITEM_QTY], int);
 
 int main(){
     
     /* variable declaration */
     srand(time(NULL));
+
     double bag_size = CAPACITY;
     double item_price[2][ITEM_QTY] = {0};
     double bag_profit[PARTICLE_AMT][2] = {0};
     double candidates[PARTICLE_AMT][ITEM_QTY] = {0};
-    int cut_index = -1;
 
 
 
@@ -104,6 +104,7 @@ void determineItemPrice(double item[][ITEM_QTY]){
 
 void initialization(double cand[][ITEM_QTY], int row_size){
     
+    cout << "\nAfter Initialization" << endl;
     for(int i = 0 ; i < row_size ; i++){
         for(int j = 0 ; j < ITEM_QTY ; j++){
             cand[i][j] = rand()%2;
@@ -112,7 +113,7 @@ void initialization(double cand[][ITEM_QTY], int row_size){
 
     for(int i = 0; i < row_size ; i++){
         for(int i = 0 ; i < ITEM_QTY ; i++){
-
+            
         }
     }
 }
@@ -122,6 +123,7 @@ void fitness(double cand[][ITEM_QTY], double bag_profit[][2], int particle){
     int index_sum = 0; //sum of indice
     int value = 0; //count of 1s
 
+    // cout << "\nAfter Fitness" << endl;
     for(int i = 0 ; i < particle ; i++){
         for(int j = 0 ; j < ITEM_QTY ; j++){
             if(cand[i][j]==1){
@@ -142,8 +144,6 @@ void fitness(double cand[][ITEM_QTY], double bag_profit[][2], int particle){
     }
 }
 
-
-
 void selection(double cand[][ITEM_QTY], double bagprofit[][2], int particle){
     
     double min = 2048;
@@ -152,7 +152,7 @@ void selection(double cand[][ITEM_QTY], double bagprofit[][2], int particle){
     int min_index[particle/2];
     int slct_index;
 
-    cout << "After Selection" << endl;
+    cout << "\nAfter Selection" << endl;
     for(int i = 0 ; i < particle/2 ; i++){
         min_index[i] = -1;
     }
@@ -211,7 +211,7 @@ void crossover(double cand[][ITEM_QTY], int particle){
     int cut_index = ITEM_QTY/2;
     int half_flag = particle/2;
 
-    cout << "After Crossover" << endl;
+    cout << "\nAfter Crossover" << endl;
     for(int i = 0 ; i < particle/2 ; i++){
         for(int j = 0 ; j < ITEM_QTY ; j++){
             if(j < cut_index)
@@ -244,7 +244,7 @@ void mutation(double cand[][ITEM_QTY], int particle){
     int half = PARTICLE_AMT/2;
     int mut_index, chance; 
     
-    cout << "After Mutation" << endl;
+    cout << "\nAfter Mutation" << endl;
     for(int i = 0 ; i < particle ; i++){
         
         chance = rand()%2;
