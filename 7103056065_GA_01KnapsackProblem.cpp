@@ -7,7 +7,7 @@
 #define ITEM_PRICE_ROW sizeof(item_price)/sizeof(item_price[0])
 
 /* Genetic Algorithm parameters definition */
-#define GENERATION_ITERATE 50
+#define GENERATION_ITERATE 10
 #define PARTICLE_AMT 4
 
 /* namespace used */
